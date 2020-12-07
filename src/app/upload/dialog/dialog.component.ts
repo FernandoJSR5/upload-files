@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 import { MatDialogRef } from '@angular/material/dialog'
 import { UploadService } from '../upload.service'
 import { forkJoin } from 'rxjs'
@@ -13,8 +13,9 @@ export class DialogComponent {
 
   @ViewChild('file') file: any
   public files: Set<File> = new Set()
+
   progress: any
-  canBeClosed = true
+  canBeClosed = false
   primaryButtonText = 'Upload'
   showCancelButton = true
   uploading = false
@@ -33,6 +34,12 @@ export class DialogComponent {
         this.files.add(files[key]);
       }
     }
+    this.canBeClosed = true;
+  }
+
+  deleteFile(file: File) {
+    this.files.delete(file);
+    this.canBeClosed = this.files.size === 0 ? false : true; 
   }
 
   closeDialog() {

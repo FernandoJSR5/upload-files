@@ -1,62 +1,26 @@
 <input type="file" #file style="display: none" (change)="onFilesAdded()" />
 <div class="container" fxLayout="column" fxLayoutAlign="space-evenly stretch">
-  <h2 mat-dialog-title>Import Wizard</h2>
+  <h1 mat-dialog-title>Import File Elements</h1>
   <div>
     <button [disabled]="uploading || uploadSuccessful" mat-raised-button color="primary" class="add-files-btn"
       (click)="addFiles()">
-      Add File
+      Add Files
     </button>
   </div>
 
-  <!-- This is the content of the dialog, containing a list of the files to upload -->
   <mat-dialog-content fxFlex>
     <mat-list>
       <mat-list-item *ngFor="let file of files">
         <h4 mat-line>{{file.name}}</h4>
-        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress | async">
+        <button *ngIf="!progress" mat-raised-button color="warn" (click)="deleteFile(file)">Cancel</button>
+        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress | async" [color]="progress[file.name].color| async">
         </mat-progress-bar>
       </mat-list-item>
     </mat-list>
   </mat-dialog-content>
 
-  <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-    <ng-container matColumnDef="elementKind">
-      <th mat-header-cell *matHeaderCellDef> Element Kind </th>
-      <td mat-cell *matCellDef="let element"> {{element.elementKind}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="uploadFile">
-      <th mat-header-cell *matHeaderCellDef> Upload File </th>
-      <td mat-cell *matCellDef="let element">
-        <button [disabled]="uploading || uploadSuccessful" mat-icon-button color="primary"
-          (click)="addFile(element.elementKind)">
-          <mat-icon>cloud_upload</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="removeFile">
-      <th mat-header-cell *matHeaderCellDef> Remove File </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="warn">
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table> -->
-
-  <!-- This are the actions of the dialog, containing the primary and the cancel button-->
   <mat-dialog-actions class="actions">
-    <button *ngIf="showCancelButton" mat-button mat-dialog-close>Cancel</button>
+    <button *ngIf="showCancelButton" mat-raised-button mat-dialog-close>Cancel</button>
     <button mat-raised-button color="primary" [disabled]="!canBeClosed" (click)="closeDialog()">
       {{primaryButtonText}}
     </button>
