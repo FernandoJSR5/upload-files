@@ -9,20 +9,20 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { Papa } from 'ngx-papaparse';
 import * as Ajv from 'ajv';
-import * as _ from 'lodash';
+import { isEqual } from 'lodash';
 
 const url = 'http://localhost:8000/upload';
 const ajv = new Ajv();
 
-const branchSchema = {
-  "type": "object",
-  "properties": {
-    "name": { "type": "string" },
-    "busbari": { "type": "string" },
-    "busbarf": { "type": "string" },
-  },
-  "additionalProperties": false
-};
+// const branchSchema = {
+//   "type": "object",
+//   "properties": {
+//     "name": { "type": "string" },
+//     "busbari": { "type": "string" },
+//     "busbarf": { "type": "string" },
+//   },
+//   "additionalProperties": false
+// };
 
 const branchHeader = ['name', 'busbarf', 'busbari']
 
@@ -44,7 +44,8 @@ export class UploadService {
         dynamicTyping: true,
         comments: "#",
         step: (row, parser) => {
-          if (!_.isEqual(row.meta.fields.sort(), branchHeader.sort())) {
+          console.log(row.meta.fields);
+          if (!isEqual(row.meta.fields.sort(), branchHeader.sort())) {
             console.log("abort.");
             parser.abort();
           } else {
